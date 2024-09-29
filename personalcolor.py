@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from sklearn.cluster import KMeans
+from scipy.spatial import distance
 import time
 from streamlit_lottie import st_lottie
 import requests
@@ -28,25 +29,13 @@ def extract_dominant_color(image, k=4):
         st.error(f"ไม่สามารถประมวลผลภาพได้: {str(e)}")
         return None
 
-# ฟังก์ชันสำหรับการกำหนดโทนสีตามฤดูกาล
-from scipy.spatial import distance
-
 # ข้อมูล RGB ของแต่ละ Personal Color
 personal_colors = {
-    'Spring': [(253, 213, 177), (255, 224, 181), (255, 212, 160), (244, 168, 131),
-               (253, 210, 156), (255, 193, 137), (255, 215, 178), (251, 184, 147),
-               (255, 222, 164), (246, 178, 140)],
-    'Summer': [(240, 196, 179), (232, 177, 167), (244, 228, 214), (220, 196, 187),
-               (247, 222, 216), (240, 192, 190), (242, 206, 201), (234, 198, 185),
-               (222, 200, 192), (245, 209, 207)],
-    'Autumn': [(219, 171, 128), (214, 150, 110), (225, 167, 128), (201, 135, 94),
-               (216, 176, 157), (182, 123, 85), (203, 145, 104), (223, 168, 138),
-               (179, 121, 94), (174, 133, 108)],
-    'Winter': [(238, 217, 215), (219, 202, 197), (193, 175, 169), (156, 132, 128),
-               (233, 207, 203), (195, 178, 176), (176, 165, 163), (168, 157, 152),
-               (214, 191, 191), (142, 126, 123)]
+    'Spring': [(253, 213, 177), (255, 224, 181), (255, 212, 160), (244, 168, 131)],
+    'Summer': [(240, 196, 179), (232, 177, 167), (244, 228, 214), (220, 196, 187)],
+    'Autumn': [(219, 171, 128), (214, 150, 110), (225, 167, 128), (201, 135, 94)],
+    'Winter': [(238, 217, 215), (219, 202, 197), (193, 175, 169), (156, 132, 128)]
 }
-
 
 # ฟังก์ชันเพื่อวิเคราะห์ว่าโทนสีอยู่ใน Personal Color ใด
 def classify_seasonal_color(color):
@@ -60,7 +49,6 @@ def classify_seasonal_color(color):
 
     # เลือก Personal Color ที่มีระยะทางน้อยที่สุด
     season = min(distances, key=distances.get)
-
     return season
 
 # ฟังก์ชันแนะนำการแต่งตัวตามโทนสีฤดูกาล
@@ -90,10 +78,10 @@ def color_suggestions_for_season(season):
 # ฟังก์ชันสำหรับสีที่ควรหลีกเลี่ยง
 def color_nonsuggestions_for_season(season):
     nonsuggestions = {
-        'Spring': ['#f5a0c8', '#bb69b1', '#65688f', '#9b999e', '#2d2d4d'],
-        'Summer': ['#f3ff00', '#ff0093', '#ff0000', '#3bcf46', '#402918'],
-        'Autumn': ['#ffcde6', '#b5daf3', '#a3a5db', '#a7a4ab', '#a7a4ab'],
-        'Winter': ['#fb9d83', '#b34e56', '#dac000', '#9ea831', '#a47841'],
+        'Spring': ['#819cab', '#5b5231', '#124193', '#c22b58', '#cc5632', '#a01e66'],
+        'Summer': ['#9c693a', '#062d42', '#53285d', '#e26813', '#cc5632', '#d90e34'],
+        'Autumn': ['#64bcc2', '#809caa', '#e5edf7', '#f3ca3a', '#ebb0b0', '#d21078'],
+        'Winter': ['#b1d16e', '#bbdce3', '#767b41', '#e26813', '#ecb0b0', '#e49421'],
     }
     return nonsuggestions.get(season, [])
 
@@ -141,7 +129,7 @@ if uploaded_file is not None:
             cols = st.columns(len(color_suggestions))
             for i, color in enumerate(color_suggestions):
                 with cols[i]:
-                    st.markdown(f"<div style='width:60px; height:100px; background-color:{color};'></div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='width:100px; height:100px; background-color:{color};'></div>", unsafe_allow_html=True)
 
         # แสดงสีที่ควรหลีกเลี่ยง
         st.write("🚫 สีที่ควรหลีกเลี่ยง:")
@@ -151,4 +139,5 @@ if uploaded_file is not None:
             for i, color in enumerate(color_nonsuggestions):
                 with cols_nonsug[i]:
                     st.markdown(f"<div style='width:100px; height:100px; background-color:{color};'></div>", unsafe_allow_html=True)
+
 

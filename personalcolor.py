@@ -129,7 +129,7 @@ if uploaded_file is not None:
             cols = st.columns(len(color_suggestions))
             for i, color in enumerate(color_suggestions):
                 with cols[i]:
-                    st.markdown(f"<div style='width:100px; height:100px; background-color:{color};'></div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='width:50px; height:100px; background-color:{color};'></div>", unsafe_allow_html=True)
 
         # แสดงสีที่ควรหลีกเลี่ยง
         st.write("🚫 สีที่ควรหลีกเลี่ยง:")
@@ -138,6 +138,6 @@ if uploaded_file is not None:
             cols_nonsug = st.columns(len(color_nonsuggestions))
             for i, color in enumerate(color_nonsuggestions):
                 with cols_nonsug[i]:
-                    st.markdown(f"<div style='width:100px; height:100px; background-color:{color};'></div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='width:50px; height:100px; background-color:{color};'></div>", unsafe_allow_html=True)
 
 

@@ -147,7 +147,7 @@ if uploaded_file is not None:
                     # ใช้ markdown เพื่อแสดงบล็อกสีในแต่ละคอลัมน์
                     st.markdown(
                         f"""
-                        <div style='width:50px; height:100px; background-color:{color}; margin-right: -50px; margin-bottom: 10px;'></div>
+                        <div style='width:50px; height:100px; background-color:{color}; margin-right: 10px; margin-bottom: 10px;'></div>
                         """,
                         unsafe_allow_html=True
                     )
